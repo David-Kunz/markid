@@ -80,10 +80,12 @@ function M.init()
         javascript = [[
           (identifier) @markid
           (property_identifier) @markid
+          (shorthand_property_identifier_pattern) @markid
         ]],
         typescript = [[
           (identifier) @markid
           (property_identifier) @markid
+          (shorthand_property_identifier_pattern) @markid
         ]]
       },
       default_query = '(identifier) @markid'
