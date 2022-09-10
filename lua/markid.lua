@@ -4,11 +4,6 @@ local configs = require("nvim-treesitter.configs")
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
-local get_root = function(parser)
-  local tree = parser:parse()[1]
-  return tree:root()
-end
-
 local get_query = function(lang, config)
   return vim.treesitter.parse_query(lang, config.queries[lang] or config.default_query)
 end
@@ -35,7 +30,8 @@ function M.init()
 
         local query = get_query(lang, config)
         local parser = parsers.get_parser(bufnr, lang)
-        local root = get_root(parser)
+        local tree = parser:parse()[1]
+        local root = tree:root()
 
         local hl_group_of_identifier = {}
 
@@ -45,29 +41,27 @@ function M.init()
             local name = query.captures[id]
             if name == "markid" then
               local text = vim.treesitter.query.get_node_text(node, bufnr)
-              if hl_group_of_identifier[text] == nil then
-                -- semi random: Allows to have stable global colors for the same name
-                local idx = (string_to_int(text) % #config.colors) + 1
-                local group_name = "markid" .. idx
-                vim.highlight.create(group_name, { guifg = config.colors[idx] })
-                hl_group_of_identifier[text] = group_name
+              if text ~= nil then
+                if hl_group_of_identifier[text] == nil then
+                  -- semi random: Allows to have stable global colors for the same name
+                  local idx = (string_to_int(text) % #config.colors) + 1
+                  local group_name = "markid" .. idx
+                  vim.highlight.create(group_name, { guifg = config.colors[idx] })
+                  hl_group_of_identifier[text] = group_name
+                end
+                local start_row, start_col, end_row, end_col = node:range()
+                local range_start = { start_row, start_col }
+                local range_end = { end_row, end_col }
+                vim.highlight.range(bufnr, namespace, hl_group_of_identifier[text], range_start, range_end)
               end
-              local start_row, start_col, end_row, end_col = node:range()
-              local range_start = { start_row, start_col }
-              local range_end = { end_row, end_col }
-              vim.highlight.range(bufnr, namespace, hl_group_of_identifier[text], range_start, range_end)
             end
           end
         end
 
         highlight_tree(root, 0, -1)
-
         parser:register_cbs({
           on_changedtree = function(changes, tree)
-            for _, change in ipairs(changes) do
-              local change_root = tree:root()
-              highlight_tree(change_root, change[1], change[3] + 1)
-            end
+            highlight_tree(tree:root(), 0, -1) -- can be made more efficient, but for plain identifier changes, `changes` is empty
           end
         })
       end,
