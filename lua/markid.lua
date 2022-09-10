@@ -4,9 +4,6 @@ local configs = require("nvim-treesitter.configs")
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
-local get_query = function(lang, config)
-  return vim.treesitter.parse_query(lang, config.queries[lang] or config.default_query)
-end
 
 function string_to_int(str)
   if str == nil then return 0 end
@@ -28,14 +25,14 @@ function M.init()
       attach = function(bufnr, lang)
         local config = configs.get_module("markid")
 
-        local query = get_query(lang, config)
+        local query = vim.treesitter.parse_query(lang, config.queries[lang] or config.default_query)
         local parser = parsers.get_parser(bufnr, lang)
         local tree = parser:parse()[1]
         local root = tree:root()
 
         local hl_group_of_identifier = {}
 
-        function highlight_tree(tree, cap_start, cap_end)
+        local highlight_tree = function(tree, cap_start, cap_end)
           vim.api.nvim_buf_clear_namespace(bufnr, namespace, cap_start, cap_end)
           for id, node in query:iter_captures(tree, bufnr, cap_start, cap_end) do
             local name = query.captures[id]
