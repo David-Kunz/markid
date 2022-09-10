@@ -13,22 +13,14 @@ local get_query = function(lang, config)
   return vim.treesitter.parse_query(lang, config.queries[lang] or config.default_query)
 end
 
-function colorizer(colors)
-  local idx = 0
-  local highlights = {}
-  local function next()
-    idx = idx + 1
-    if idx > #colors then
-      idx = 1
-    end
-    if highlights[idx] == nil then
-      local group_name = "markid" .. idx
-      vim.highlight.create(group_name, { guifg = colors[idx] })
-      highlights[idx] = group_name
-    end
-    return highlights[idx]
+function string_to_int(str)
+  if str == nil then return 0 end
+  local int = 0
+  for i = 1, #str do
+    local c = str:sub(i, i)
+    int = int + string.byte(c)
   end
-  return next
+  return int
 end
 
 local M = {}
@@ -45,8 +37,6 @@ function M.init()
         local parser = parsers.get_parser(bufnr, lang)
         local root = get_root(parser)
 
-
-        local next_hl = colorizer(config.colors)
         local hl_group_of_identifier = {}
 
         function highlight_tree(tree, cap_start, cap_end)
@@ -56,7 +46,11 @@ function M.init()
             if name == "markid" then
               local text = vim.treesitter.query.get_node_text(node, bufnr)
               if hl_group_of_identifier[text] == nil then
-                hl_group_of_identifier[text] = next_hl()
+                -- semi random: Allows to have stable global colors for the same name
+                local idx = (string_to_int(text) % #config.colors) + 1
+                local group_name = "markid" .. idx
+                vim.highlight.create(group_name, { guifg = config.colors[idx] })
+                hl_group_of_identifier[text] = group_name
               end
               local start_row, start_col, end_row, end_col = node:range()
               local range_start = { start_row, start_col }
