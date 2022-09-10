@@ -36,7 +36,7 @@ local M = {}
 function M.init()
   ts.define_modules {
     markid = {
-      module_path = "markid.init",
+      module_path = "markid",
 
       attach = function(bufnr, lang)
         local config = configs.get_module("markid")
