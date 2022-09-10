@@ -52,7 +52,6 @@ require'nvim-treesitter.configs'.setup {
       ]]
     },
     default_query = '(identifier) @markid'
-    }
   }
 }
 ```
