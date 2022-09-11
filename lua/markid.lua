@@ -4,7 +4,7 @@ local configs = require("nvim-treesitter.configs")
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
-function string_to_int(str)
+local string_to_int = function(str)
     if str == nil then
         return 0
     end
