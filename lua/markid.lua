@@ -1,6 +1,6 @@
 local ts = require("nvim-treesitter")
-local parsers = require("nvim-treesitter.parsers")
-local configs = require("nvim-treesitter.configs")
+local parsers = ts.parsers
+local configs = ts.configs
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
@@ -80,7 +80,7 @@ function M.init()
                 highlight_tree(root, 0, -1)
                 parser:register_cbs(
                     {
-                        on_changedtree = function()
+                        on_changedtree = function(changes, tree)
                             highlight_tree(tree:root(), 0, -1) -- can be made more efficient, but for plain identifier changes, `changes` is empty
                         end
                     }
