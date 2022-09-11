@@ -1,6 +1,6 @@
 # markid
 
-A Neovim extension to highlight identical identifiers with the same color.
+A Neovim extension to highlight same-name identifiers with the same color.
 
 ## Motivation
 
