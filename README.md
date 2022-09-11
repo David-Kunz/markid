@@ -7,7 +7,7 @@ A Neovim extension to highlight identical identifiers with the same color.
 Syntax highlighting is mostly based on element kinds of the abstract syntax tree.
 This sometimes leads to different visual representations of the same variable, consider this example:
 
-
+![usual-highlighting](https://user-images.githubusercontent.com/1009936/189521578-99f0fdfb-f1db-4598-89e8-5ee5c98773fd.png)
 
 
 ## Installation
