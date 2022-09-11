@@ -11,7 +11,7 @@ This sometimes leads to different visual representations of the same variable, c
 
 Here, `myParam` has the colors yellow and white, making it hard for the developer to recognise that both represent the same thing.
 
-Now with markid, it's ensured that same-name identifiers are represented with the same colors:
+Now with markid, it's ensured that same-name identifiers are represented with the same color:
 
 <img src="https://user-images.githubusercontent.com/1009936/189521962-680a28f2-2351-4c8c-96b1-12cc67ff59f4.png" height="100">
 
