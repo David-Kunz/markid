@@ -4,6 +4,9 @@ local configs = require("nvim-treesitter.configs")
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
+-- Global table to store names of created highlight groups
+local hl_group_of_identifier = {}
+
 local string_to_int = function(str)
     if str == nil then
         return 0
@@ -15,6 +18,7 @@ local string_to_int = function(str)
     end
     return int
 end
+
 
 local M = {}
 
@@ -45,8 +49,6 @@ function M.init()
                 local parser = parsers.get_parser(bufnr, lang)
                 local tree = parser:parse()[1]
                 local root = tree:root()
-
-                local hl_group_of_identifier = {}
 
                 local highlight_tree = function(root_tree, cap_start, cap_end)
                     vim.api.nvim_buf_clear_namespace(bufnr, namespace, cap_start, cap_end)
