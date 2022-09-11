@@ -15,7 +15,7 @@ Now with markid, it's ensured that same-name identifiers are represented with th
 
 <img src="https://user-images.githubusercontent.com/1009936/189521962-680a28f2-2351-4c8c-96b1-12cc67ff59f4.png" height="100">
 
-Here is a slightly more complicated example, notice how markid helps to track the 'flow of variables':
+Here is a slightly more complicated example with and without markid, notice how markid helps you to track the flow of variables:
 
 <img src="https://user-images.githubusercontent.com/1009936/189522794-cae13379-6b99-4976-b429-5e5414549945.png" height="500">
 
