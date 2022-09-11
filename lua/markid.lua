@@ -1,6 +1,6 @@
 local ts = require("nvim-treesitter")
-local parsers = ts.parsers
-local configs = ts.configs
+local parsers = require("nvim-treesitter.parsers")
+local configs = require("nvim-treesitter.configs")
 
 local namespace = vim.api.nvim_create_namespace("markid")
 
