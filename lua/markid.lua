@@ -17,6 +17,22 @@ end
 
 local M = {}
 
+M.colors = {
+  dark = { '#619e9d', '#9E6162', '#81A35C', '#7E5CA3', '#9E9261', '#616D9E', '#97687B', '#689784', '#999C63', '#66639C', '#967869', '#698796', '#9E6189', '#619E76' },
+  bright = { '#f5c0c0', '#f5d3c0', '#f5eac0', '#dff5c0', '#c0f5c8', '#c0f5f1', '#c0dbf5', '#ccc0f5', '#f2c0f5' },
+  medium = {'#c99d9d', '#c9a99d', '#c9b79d', '#c9c39d', '#bdc99d', '#a9c99d', '#9dc9b6', '#9dc2c9', '#9da9c9', '#b29dc9', '#c99dc1' }
+}
+
+M.queries = {
+  default = '(identifier) @markid',
+  javascript = [[
+          (identifier) @markid
+          (property_identifier) @markid
+          (shorthand_property_identifier_pattern) @markid
+        ]]
+}
+M.queries.typescript = M.queries.javascript
+
 function M.init()
   ts.define_modules {
     markid = {
@@ -25,7 +41,7 @@ function M.init()
       attach = function(bufnr, lang)
         local config = configs.get_module("markid")
 
-        local query = vim.treesitter.parse_query(lang, config.queries[lang] or config.default_query)
+        local query = vim.treesitter.parse_query(lang, config.queries[lang] or config.queries['default'])
         local parser = parsers.get_parser(bufnr, lang)
         local tree = parser:parse()[1]
         local root = tree:root()
@@ -68,25 +84,12 @@ function M.init()
       end,
 
       is_supported = function(lang)
-        local config = configs.get_module("markid")
-        return pcall(vim.treesitter.parse_query, lang, config.queries[lang] or config.default_query)
+        local queries = configs.get_module("markid").queries
+        return pcall(vim.treesitter.parse_query, lang, queries[lang] or queries['default'])
       end,
 
-      colors = { '#619e9d', '#9E6162', '#81A35C', '#7E5CA3', '#9E9261', '#616D9E', '#97687B', '#689784', '#999C63', '#66639C', '#967869', '#698796', '#9E6189', '#619E76' },
-
-      queries = {
-        javascript = [[
-          (identifier) @markid
-          (property_identifier) @markid
-          (shorthand_property_identifier_pattern) @markid
-        ]],
-        typescript = [[
-          (identifier) @markid
-          (property_identifier) @markid
-          (shorthand_property_identifier_pattern) @markid
-        ]]
-      },
-      default_query = '(identifier) @markid'
+      colors = M.colors.medium,
+      queries = M.queries
     }
   }
 end
