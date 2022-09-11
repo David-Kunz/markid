@@ -59,7 +59,7 @@ function M.init()
                                     -- semi random: Allows to have stable global colors for the same name
                                     local idx = (string_to_int(text) % #config.colors) + 1
                                     local group_name = "markid" .. idx
-                                    vim.highlight.create(group_name, {guifg = config.colors[idx]})
+                                    vim.api.nvim_set_hl(0, group_name, { fg = config.colors[idx] })
                                     hl_group_of_identifier[text] = group_name
                                 end
                                 local start_row, start_col, end_row, end_col = node:range()
