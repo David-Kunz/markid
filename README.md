@@ -15,7 +15,7 @@ Now with markid, it's ensured that same-name identifiers are represented with th
 
 <img src="https://user-images.githubusercontent.com/1009936/189521962-680a28f2-2351-4c8c-96b1-12cc67ff59f4.png" height="100">
 
-Here's a slightly more complicated example with, try to track the flow of `qux`:
+Here's a slightly more complicated example, try to track the flow of `qux`:
 
 <img src="https://user-images.githubusercontent.com/1009936/189522794-cae13379-6b99-4976-b429-5e5414549945.png" height="500">
 
