@@ -48,9 +48,9 @@ function M.init()
 
                 local hl_group_of_identifier = {}
 
-                local highlight_tree = function(tree, cap_start, cap_end)
+                local highlight_tree = function(root_tree, cap_start, cap_end)
                     vim.api.nvim_buf_clear_namespace(bufnr, namespace, cap_start, cap_end)
-                    for id, node in query:iter_captures(tree, bufnr, cap_start, cap_end) do
+                    for id, node in query:iter_captures(root_tree, bufnr, cap_start, cap_end) do
                         local name = query.captures[id]
                         if name == "markid" then
                             local text = vim.treesitter.query.get_node_text(node, bufnr)
@@ -80,7 +80,7 @@ function M.init()
                 highlight_tree(root, 0, -1)
                 parser:register_cbs(
                     {
-                        on_changedtree = function(changes, tree)
+                        on_changedtree = function()
                             highlight_tree(tree:root(), 0, -1) -- can be made more efficient, but for plain identifier changes, `changes` is empty
                         end
                     }
