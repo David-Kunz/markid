@@ -80,11 +80,12 @@ m.queries.typescript = m.queries.javascript
 
 ## Custom Highlight Groups
 
-For more control, you can define the highlight groups `markid1`, `markid2`, ..., this is especially useful for theme designers.
+For more control, you can define the highlight groups `markid1`, `markid2`, ..., `markid10`, this is especially useful for theme designers.
 
 Example:
 ```lua
 vim.api.nvim_set_hl(0, 'markid1', { fg = '#c99d9d', bg = '#003844', underline = true })
 vim.api.nvim_set_hl(0, 'markid2', { fg = '#c9a99d', bg = '#003844', underline = true })
 -- ...
+vim.api.nvim_set_hl(0, 'markid10', { fg = '#c9b79d', bg = '#003844', underline = true })
 ```
