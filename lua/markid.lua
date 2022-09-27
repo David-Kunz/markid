@@ -59,9 +59,22 @@ function M.init()
                             if text ~= nil then
                                 if hl_group_of_identifier[text] == nil then
                                     -- semi random: Allows to have stable global colors for the same name
-                                    local idx = (string_to_int(text) % #config.colors) + 1
+                                    local colors_count = 0
+                                    if not config.colors then
+                                      while vim.fn.hlexists('markid' .. colors_count + 1) == 1 do
+                                        colors_count = colors_count + 1
+                                      end
+                                    else
+                                      colors_count = #config.colors
+                                    end
+                                    if colors_count == 0 then
+                                      return
+                                    end
+                                    local idx = (string_to_int(text) % colors_count) + 1
                                     local group_name = "markid" .. idx
-                                    vim.api.nvim_set_hl(0, group_name, { default = true, fg = config.colors[idx] })
+                                    if config.colors then
+                                      vim.api.nvim_set_hl(0, group_name, { default = true, fg = config.colors[idx] })
+                                    end
                                     hl_group_of_identifier[text] = group_name
                                 end
                                 local start_row, start_col, end_row, end_col = node:range()
