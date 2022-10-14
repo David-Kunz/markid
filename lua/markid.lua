@@ -45,7 +45,10 @@ function M.init()
             attach = function(bufnr, lang)
                 local config = configs.get_module("markid")
 
-                local query = vim.treesitter.parse_query(lang, config.queries[lang] or config.queries["default"])
+                local query = vim.treesitter.get_query(lang, 'markid')
+                if query == nil or query == '' then
+                  query = vim.treesitter.parse_query(lang, config.queries[lang] or config.queries["default"])
+                end
                 local parser = parsers.get_parser(bufnr, lang)
                 local tree = parser:parse()[1]
                 local root = tree:root()
