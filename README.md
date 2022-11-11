@@ -78,6 +78,8 @@ m.queries = {
 m.queries.typescript = m.queries.javascript
 ```
 
+The `m.queries` table above can be used to define language-specific highlighting rules via custom Treesitter queries. Alternatively, markid can also source queries from standalone files located in your local runtime `queries/` directory. Simply create a new directory in your nvim config folder for your language of choice, e.g. `$HOME/.config/nvim/queries/python`, and write your query in a file called `markid.scm`
+
 ## Custom Highlight Groups
 
 For more control, you can define the highlight groups `markid1`, `markid2`, ..., `markid10`, this is especially useful for theme designers.
