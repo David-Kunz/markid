@@ -46,9 +46,9 @@ function M.init()
             attach = function(bufnr, lang)
                 local config = configs.get_module("markid")
 
-                local query = vim.treesitter.get_query(lang, 'markid')
+                local query = vim.treesitter.query.get(lang, 'markid')
                 if query == nil or query == '' then
-                  query = vim.treesitter.parse_query(lang, config.queries[lang] or config.queries["default"])
+                  query = vim.treesitter.query.parse(lang, config.queries[lang] or config.queries["default"])
                 end
                 local parser = parsers.get_parser(bufnr, lang)
                 local tree = parser:parse()[1]
@@ -59,7 +59,7 @@ function M.init()
                     for id, node in query:iter_captures(root_tree, bufnr, cap_start, cap_end) do
                         local name = query.captures[id]
                         if name == "markid" then
-                            local text = vim.treesitter.query.get_node_text(node, bufnr)
+                            local text = vim.treesitter.get_node_text(node, bufnr)
                             if text ~= nil then
                                 if hl_group_of_identifier[text] == nil then
                                     -- semi random: Allows to have stable global colors for the same name
@@ -110,7 +110,7 @@ function M.init()
             end,
             is_supported = function(lang)
                 local queries = configs.get_module("markid").queries
-                return pcall(vim.treesitter.parse_query, lang, queries[lang] or queries["default"])
+                return pcall(vim.treesitter.query.parse, lang, queries[lang] or queries["default"])
             end,
             colors = M.colors.medium,
             queries = M.queries
