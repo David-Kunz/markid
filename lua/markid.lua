@@ -55,6 +55,9 @@ function M.init()
                 local root = tree:root()
 
                 local highlight_tree = function(root_tree, cap_start, cap_end)
+                    if not vim.api.nvim_buf_is_loaded(0) then
+                      return
+                    end
                     vim.api.nvim_buf_clear_namespace(bufnr, namespace, cap_start, cap_end)
                     for id, node in query:iter_captures(root_tree, bufnr, cap_start, cap_end) do
                         local name = query.captures[id]
@@ -106,7 +109,9 @@ function M.init()
                 )
             end,
             detach = function(bufnr)
-                vim.api.nvim_buf_clear_namespace(bufnr, namespace, 0, -1)
+                if vim.api.nvim_buf_is_valid(bufnr) then
+                  vim.api.nvim_buf_clear_namespace(bufnr, namespace, 0, -1)
+                end
             end,
             is_supported = function(lang)
                 local queries = configs.get_module("markid").queries
