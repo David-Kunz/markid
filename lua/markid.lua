@@ -55,7 +55,7 @@ function M.init()
                 local root = tree:root()
 
                 local highlight_tree = function(root_tree, cap_start, cap_end)
-                    if not vim.api.nvim_buf_is_loaded(0) then
+                    if not vim.api.nvim_buf_is_loaded(bufnr) then
                       return
                     end
                     vim.api.nvim_buf_clear_namespace(bufnr, namespace, cap_start, cap_end)
